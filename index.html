@@ -392,7 +392,13 @@
         // - Prompts en anglais
 
         // Fonction pour générer des histoires créatives en français
-        function generateCreativeStory(keywords) {
+        function generateCreativeStory(keywords, randomSeed) {
+          // Utiliser le randomSeed pour influencer toutes les sélections aléatoires
+          function seededRandom() {
+            randomSeed = (randomSeed * 9301 + 49297) % 233280;
+            return randomSeed / 233280;
+          }
+
           // Genres littéraires
           const genres = [
             "science-fiction", "fantasy", "aventure", "drame", "comédie", 
@@ -424,11 +430,11 @@
             }
           }
           if (!mainGenre) {
-            mainGenre = genres[Math.floor(Math.random() * genres.length)];
+            mainGenre = genres[Math.floor(seededRandom() * genres.length)];
           }
           
           // Déterminer la structure narrative
-          const structure = narrativeStructures[Math.floor(Math.random() * narrativeStructures.length)];
+          const structure = narrativeStructures[Math.floor(seededRandom() * narrativeStructures.length)];
           
           // Sélectionner des thèmes
           const selectedThemes = [];
@@ -439,7 +445,7 @@
           }
           // Ajouter des thèmes aléatoires si nécessaire
           while (selectedThemes.length < 3) {
-            const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+            const randomTheme = themes[Math.floor(seededRandom() * themes.length)];
             if (!selectedThemes.includes(randomTheme)) {
               selectedThemes.push(randomTheme);
             }
@@ -450,10 +456,10 @@
           const titleSuffixes = ["l'Aube", "l'Éternité", "la Destinée", "l'Espoir", "la Rédemption", "l'Inconnu"];
           
           let title = "";
-          if (Math.random() < 0.5) {
-            title = `${titlePrefixes[Math.floor(Math.random() * titlePrefixes.length)]} ${keywordsList[0].charAt(0).toUpperCase() + keywordsList[0].slice(1)}`;
+          if (seededRandom() < 0.5) {
+            title = `${titlePrefixes[Math.floor(seededRandom() * titlePrefixes.length)]} ${keywordsList[0].charAt(0).toUpperCase() + keywordsList[0].slice(1)}`;
           } else {
-            title = `${keywordsList[0].charAt(0).toUpperCase() + keywordsList[0].slice(1)} et ${titleSuffixes[Math.floor(Math.random() * titleSuffixes.length)]}`;
+            title = `${keywordsList[0].charAt(0).toUpperCase() + keywordsList[0].slice(1)} et ${titleSuffixes[Math.floor(seededRandom() * titleSuffixes.length)]}`;
           }
           
           // Générer un synopsis
@@ -469,12 +475,12 @@
           
           const protagonist = {
             name: "Alex",
-            trait: protagonistTraits[Math.floor(Math.random() * protagonistTraits.length)]
+            trait: protagonistTraits[Math.floor(seededRandom() * protagonistTraits.length)]
           };
           
           const antagonist = {
             name: "Morgan",
-            trait: antagonistTraits[Math.floor(Math.random() * antagonistTraits.length)]
+            trait: antagonistTraits[Math.floor(seededRandom() * antagonistTraits.length)]
           };
           
           // Lieux
@@ -483,7 +489,7 @@
             "un désert infini", "une station spatiale", "un monde parallèle"
           ];
           
-          const mainLocation = locations[Math.floor(Math.random() * locations.length)];
+          const mainLocation = locations[Math.floor(seededRandom() * locations.length)];
           
           // Chapitre 1: Introduction
           chapters.push({
@@ -498,106 +504,106 @@
           // Chapitre 2: L'Appel à l'aventure
           chapters.push({
             title: "L'Appel du Destin",
-            content: `${protagonist.name} est confronté(e) à un choix crucial lorsqu'un messager mystérieux lui révèle sa véritable destinée. Malgré ses réticences initiales, les circonstances le/la poussent à accepter la mission qui lui est confiée.
+            content: `${protagonist.name} est confronté(e) à un choix crucial qui le/la pousse à quitter sa zone de confort. Un mentor ou un allié inattendu apparaît pour le/la guider dans cette nouvelle voie.
             
-            En chemin, ${protagonist.name} rencontre son premier allié, un personnage excentrique mais loyal qui possède des connaissances essentielles sur ${keywordsList[1]}. Ensemble, ils élaborent un plan pour contrecarrer les ambitions de ${antagonist.name}.
+            Les premières épreuves se présentent, mettant à l'épreuve la détermination de ${protagonist.name} et révélant davantage sur la nature de ${antagonist.name} et ses motivations liées à ${keywordsList[1] || keywordsList[0]}.
             
-            Ce chapitre approfondit la psychologie de ${protagonist.name}, révélant ses motivations profondes et ses faiblesses, tout en développant le thème de ${selectedThemes[2]} qui guidera son arc narratif.`
+            Ce chapitre développe le thème de ${selectedThemes[2]} à travers les choix difficiles que doit faire ${protagonist.name}, tout en approfondissant l'univers ${mainGenre} dans lequel se déroule l'histoire.`
           });
           
-          // Chapitre 3: Premiers obstacles
+          // Chapitre 3: Refus de l'appel
           chapters.push({
-            title: "Premières Épreuves",
-            content: `La quête de ${protagonist.name} rencontre ses premiers obstacles lorsque les sbires de ${antagonist.name} tendent une embuscade. Cette confrontation révèle l'ampleur du pouvoir de l'adversaire et les dangers qui attendent nos héros.
+            title: "Hésitations et Doutes",
+            content: `Face à l'ampleur de la tâche qui l'attend, ${protagonist.name} hésite et tente de fuir ses responsabilités. Les conséquences de ce refus se font rapidement sentir, affectant non seulement sa vie mais aussi celle de ses proches.
             
-            Après une fuite périlleuse, ${protagonist.name} et son allié trouvent refuge dans un lieu inattendu où ils découvrent des indices sur une ancienne prophétie liée à ${keywordsList[0]} et ${keywordsList[1]}.
+            ${antagonist.name} profite de cette période de doute pour renforcer son emprise sur ${mainLocation}, exploitant le pouvoir de ${keywordsList[0]} à des fins néfastes.
             
-            Ce chapitre introduit les premiers éléments de tension et d'action, tout en développant la mythologie du monde et en renforçant les enjeux de la quête.`
+            Ce chapitre explore les faiblesses de ${protagonist.name} et les conséquences de l'inaction, tout en développant la menace représentée par ${antagonist.name} et ses alliés.`
           });
           
           // Chapitre 4: Rencontre avec le mentor
           chapters.push({
-            title: "Le Mentor",
-            content: `Dans sa quête de réponses, ${protagonist.name} rencontre un mentor sage et expérimenté qui possède une connaissance approfondie de ${keywordsList[2]}. Ce mentor révèle à ${protagonist.name} des vérités troublantes sur son passé et lui enseigne des compétences essentielles pour affronter les défis à venir.
+            title: "Le Guide",
+            content: `${protagonist.name} rencontre un mentor qui lui révèle des vérités cachées sur ${keywordsList[0]} et lui enseigne les compétences nécessaires pour affronter les défis à venir.
             
-            Pendant ce temps, ${antagonist.name} consolide son pouvoir et lance une offensive qui menace l'équilibre du monde. Les nouvelles de cette menace parviennent à ${protagonist.name}, renforçant l'urgence de sa mission.
+            Cette figure de sagesse partage son expérience et aide ${protagonist.name} à comprendre la véritable nature de sa quête, ainsi que les enjeux plus larges qui dépassent ses préoccupations personnelles.
             
-            Ce chapitre approfondit le monde et son histoire, tout en développant la relation entre ${protagonist.name} et son mentor, une dynamique qui illustre le thème de ${selectedThemes[0]}.`
+            Ce chapitre approfondit l'univers de l'histoire en révélant son histoire et ses règles, tout en développant le thème de ${selectedThemes[0]} à travers la transmission de connaissances et la croissance personnelle.`
           });
           
-          // Chapitre 5: Traversée du premier seuil
+          // Chapitre 5: Franchissement du seuil
           chapters.push({
-            title: "Le Passage",
-            content: `${protagonist.name} quitte la sécurité relative de son refuge pour s'aventurer dans un territoire inconnu et dangereux. Ce passage symbolique marque un point de non-retour dans son voyage.
+            title: "Le Point de Non-Retour",
+            content: `${protagonist.name} s'engage pleinement dans l'aventure, franchissant un seuil symbolique qui marque son entrée dans un monde inconnu. Ce passage s'accompagne souvent d'une épreuve ou d'un sacrifice.
             
-            En chemin, le groupe rencontre de nouveaux alliés aux motivations diverses, formant une équipe hétéroclite unie par un objectif commun. Chaque membre apporte des compétences uniques qui seront essentielles pour surmonter les obstacles à venir.
+            De nouveaux alliés rejoignent ${protagonist.name} dans sa quête, chacun apportant des compétences uniques et des perspectives différentes sur les thèmes de ${selectedThemes.join(', ')}.
             
-            Ce chapitre élargit le casting de personnages et enrichit la dynamique de groupe, tout en introduisant de nouveaux éléments du monde liés à ${keywordsList[1]} et ${keywordsList[2]}.`
+            Ce chapitre marque une accélération du rythme narratif et établit clairement les enjeux de l'histoire, tout en développant les relations entre les personnages.`
           });
           
           // Chapitre 6: Épreuves, alliés et ennemis
           chapters.push({
-            title: "Alliés et Ennemis",
-            content: `L'équipe de ${protagonist.name} affronte une série d'épreuves qui testent leurs compétences et leur cohésion. Ces défis révèlent les forces et les faiblesses de chaque membre, forgeant des liens plus forts entre certains et créant des tensions entre d'autres.
+            title: "Alliés et Adversaires",
+            content: `${protagonist.name} et ses compagnons font face à une série d'épreuves qui testent leurs capacités et leur détermination. Ces défis révèlent les forces et les faiblesses de chacun.
             
-            Une rencontre inattendue avec un agent de ${antagonist.name} révèle que le traître pourrait se trouver au sein même du groupe. La méfiance s'installe, mettant à l'épreuve la loyauté de chacun.
+            De nouveaux antagonistes apparaissent, compliquant la mission de ${protagonist.name} et révélant la complexité du plan de ${antagonist.name} concernant ${keywordsList[0]} et ${keywordsList[1] || keywordsList[0]}.
             
-            Ce chapitre développe les relations entre les personnages et introduit des éléments de mystère et de suspicion, tout en explorant le thème de ${selectedThemes[1]}.`
+            Ce chapitre développe les personnages secondaires et enrichit l'univers de l'histoire, tout en explorant les thèmes de ${selectedThemes[1]} et ${selectedThemes[2]} à travers les différentes épreuves.`
           });
           
           // Chapitre 7: Approche de la caverne
           chapters.push({
-            title: "Au Cœur des Ténèbres",
-            content: `${protagonist.name} et ses alliés approchent du repaire de ${antagonist.name}, un lieu redoutable protégé par des pièges mortels et des gardiens puissants. Ils élaborent un plan audacieux pour infiltrer la forteresse et découvrir le secret ultime de ${keywordsList[0]}.
+            title: "Préparatifs",
+            content: `${protagonist.name} et ses alliés se préparent pour la confrontation majeure à venir. Ils élaborent un plan, rassemblent des ressources et renforcent leurs liens.
             
-            Avant l'assaut final, ${protagonist.name} fait face à ses doutes et ses peurs, trouvant une résolution renouvelée dans sa mission et dans les liens forgés avec ses compagnons.
+            Des révélations sur le passé de ${protagonist.name} ou de ${antagonist.name} apportent un nouvel éclairage sur leur conflit et sur les thèmes de ${selectedThemes.join(' et ')}.
             
-            Ce chapitre intensifie la tension narrative et approfondit la psychologie de ${protagonist.name}, tout en préparant le terrain pour la confrontation centrale de l'histoire.`
+            Ce chapitre crée une tension croissante et approfondit les motivations des personnages, tout en préparant le terrain pour le point culminant de l'histoire.`
           });
           
           // Chapitre 8: L'épreuve suprême
           chapters.push({
-            title: "L'Épreuve Suprême",
-            content: `${protagonist.name} affronte enfin ${antagonist.name} dans une confrontation épique qui met à l'épreuve tout ce qu'il/elle a appris. Cette bataille n'est pas seulement physique mais aussi idéologique, opposant deux visions du monde incompatibles.
+            title: "La Confrontation",
+            content: `${protagonist.name} affronte ${antagonist.name} dans une première confrontation majeure. Cette épreuve représente un moment de crise où tout semble perdu.
             
-            Au moment crucial, ${protagonist.name} découvre une vérité bouleversante qui remet en question sa compréhension de la situation et de sa propre identité. Ce moment de révélation change la dynamique du conflit de manière inattendue.
+            Un sacrifice important est souvent nécessaire, et ${protagonist.name} doit puiser dans ses ressources les plus profondes pour survivre à cette épreuve liée à ${keywordsList[0]}.
             
-            Ce chapitre constitue le point culminant de l'action et le pivot de l'histoire, explorant pleinement les thèmes de ${selectedThemes[0]} et ${selectedThemes[2]} à travers les choix difficiles auxquels ${protagonist.name} est confronté(e).`
+            Ce chapitre constitue le point médian de l'histoire et marque un tournant décisif dans le développement du protagoniste et dans sa compréhension des enjeux.`
           });
           
           // Chapitre 9: Récompense
           chapters.push({
-            title: "Révélations",
-            content: `Après la confrontation, ${protagonist.name} obtient ce qu'il/elle cherchait, mais pas sous la forme attendue. Cette récompense s'accompagne de nouvelles responsabilités et d'une compréhension plus profonde des enjeux véritables.
+            title: "Victoire Temporaire",
+            content: `Ayant survécu à l'épreuve, ${protagonist.name} obtient une récompense : un objet, une connaissance, une réconciliation ou une reconnaissance qui change sa perspective.
             
-            Les survivants du groupe font face aux conséquences de leurs actions et aux pertes subies. Des alliances sont renforcées, d'autres brisées, et de nouveaux objectifs émergent des cendres du conflit.
+            Ce moment de répit permet d'explorer les conséquences de la confrontation et de préparer la prochaine phase du conflit avec ${antagonist.name} autour de ${keywordsList[0]}.
             
-            Ce chapitre explore les répercussions émotionnelles et pratiques de la confrontation centrale, tout en réorientant l'histoire vers sa résolution finale.`
+            Ce chapitre approfondit les thèmes de ${selectedThemes[0]} et ${selectedThemes[1]} à travers les réflexions de ${protagonist.name} sur son parcours et ses découvertes.`
           });
           
           // Chapitre 10: Le chemin du retour
           chapters.push({
-            title: "Le Retour",
-            content: `${protagonist.name} et ses alliés survivants entreprennent le voyage de retour, poursuivis par les forces restantes de ${antagonist.name} qui cherchent vengeance. Ce voyage est marqué par des embuscades et des obstacles qui mettent à l'épreuve leur endurance et leur détermination.
+            title: "Retournements",
+            content: `${protagonist.name} doit faire face aux conséquences de ses actions et se préparer pour l'affrontement final. De nouveaux obstacles surgissent, souvent plus personnels et liés aux thèmes de ${selectedThemes.join(' et ')}.
             
-            En chemin, ${protagonist.name} commence à comprendre comment utiliser la connaissance nouvellement acquise pour résoudre la crise plus large qui menace le monde, liant ensemble les éléments de ${keywordsList[0]}, ${keywordsList[1]} et ${keywordsList[2]}.
+            ${antagonist.name} revient plus puissant qu'avant, ayant tiré les leçons de sa défaite et adapté sa stratégie concernant ${keywordsList[0]}.
             
-            Ce chapitre maintient la tension tout en préparant la résolution finale, développant la transformation intérieure de ${protagonist.name} qui reflète le thème de ${selectedThemes[1]}.`
+            Ce chapitre intensifie les enjeux et pousse ${protagonist.name} à intégrer pleinement les leçons apprises tout au long de son parcours.`
           });
           
           // Chapitre 11: Résurrection
           chapters.push({
-            title: "Renaissance",
-            content: `De retour dans un monde transformé par les actions de ${antagonist.name}, ${protagonist.name} doit faire face à une dernière épreuve qui représente l'ultime test de sa transformation personnelle. Cette épreuve exige un sacrifice qui illustre parfaitement le thème de ${selectedThemes[2]}.
+            title: "L'Ultime Épreuve",
+            content: `${protagonist.name} affronte ${antagonist.name} dans la bataille finale. Cette confrontation représente l'apogée de l'histoire et la résolution du conflit central autour de ${keywordsList[0]}.
             
-            Dans un moment de vérité, ${protagonist.name} transcende ses limites antérieures et trouve une solution inattendue qui honore les leçons apprises tout au long de son voyage.
+            ${protagonist.name} doit mettre en pratique tout ce qu'il/elle a appris et faire un choix décisif qui reflète sa transformation et sa compréhension des thèmes de ${selectedThemes.join(', ')}.
             
-            Ce chapitre représente l'apogée de l'arc de transformation de ${protagonist.name}, démontrant comment les épreuves traversées l'ont changé(e) de manière fondamentale.`
+            Ce chapitre résout les principaux arcs narratifs et offre une catharsis émotionnelle, tout en illustrant la transformation complète du protagoniste.`
           });
           
           // Chapitre 12: Retour avec l'élixir
           chapters.push({
-            title: "Un Nouveau Commencement",
+            title: "Un Nouveau Départ",
             content: `${protagonist.name} revient à son point de départ, mais avec une nouvelle perspective et le pouvoir de changer les choses. Il/Elle partage la sagesse acquise et utilise sa nouvelle influence pour transformer positivement le monde autour de lui/elle.
             
             L'histoire se conclut par une réflexion sur les thèmes de ${selectedThemes.join(', ')}, montrant comment le voyage de ${protagonist.name} illustre des vérités universelles sur la condition humaine.
@@ -612,13 +618,21 @@
             themes: selectedThemes,
             structure: structure,
             synopsis: synopsis,
-            chapters: chapters
+            chapters: chapters,
+            timestamp: new Date().toISOString(), // Ajouter un horodatage pour garantir l'unicité
+            randomSeed: randomSeed // Sauvegarder le seed pour référence
           };
         }
 
         // Fonction pour générer un storyboard basé sur l'histoire
-        function generateStoryboard(story) {
+        function generateStoryboard(story, randomSeed) {
           if (!story) return null;
+          
+          // Utiliser le randomSeed pour influencer toutes les sélections aléatoires
+          function seededRandom() {
+            randomSeed = (randomSeed * 9301 + 49297) % 233280;
+            return randomSeed / 233280;
+          }
           
           const storyboard = [];
           
@@ -640,7 +654,7 @@
               
               // Créer des scènes pour cette page
               const scenes = [];
-              const sceneCount = Math.floor(Math.random() * 2) + 1; // 1 ou 2 scènes par page
+              const sceneCount = Math.floor(seededRandom() * 2) + 1; // 1 ou 2 scènes par page
               
               for (let k = 0; k < sceneCount; k++) {
                 // Extraire des phrases du contenu de la page pour créer des scènes
@@ -651,7 +665,7 @@
                 
                 // Créer des cases pour cette scène
                 const panels = [];
-                const panelCount = Math.floor(Math.random() * 3) + 3; // 3 à 5 cases par scène
+                const panelCount = Math.floor(seededRandom() * 3) + 3; // 3 à 5 cases par scène
                 
                 for (let l = 0; l < panelCount; l++) {
                   // Extraire des phrases du contenu de la scène pour créer des cases
@@ -667,7 +681,7 @@
                   
                   // Ajouter des dialogues pour certaines cases
                   let dialogue = null;
-                  if (Math.random() < 0.7) { // 70% de chances d'avoir un dialogue
+                  if (seededRandom() < 0.7) { // 70% de chances d'avoir un dialogue
                     const dialogueOptions = [
                       "Je ne comprends pas ce qui se passe !",
                       "Nous devons agir rapidement.",
@@ -678,7 +692,7 @@
                       "Ensemble, nous pouvons y arriver.",
                       "Il y a quelque chose que vous devez savoir..."
                     ];
-                    dialogue = dialogueOptions[Math.floor(Math.random() * dialogueOptions.length)];
+                    dialogue = dialogueOptions[Math.floor(seededRandom() * dialogueOptions.length)];
                   }
                   
                   panels.push({
@@ -706,8 +720,14 @@
         }
 
         // Fonction pour générer des prompts Midjourney basés sur le storyboard
-        function generatePrompts(storyboard) {
+        function generatePrompts(storyboard, randomSeed) {
           if (!storyboard) return null;
+          
+          // Utiliser le randomSeed pour influencer toutes les sélections aléatoires
+          function seededRandom() {
+            randomSeed = (randomSeed * 9301 + 49297) % 233280;
+            return randomSeed / 233280;
+          }
           
           const prompts = [];
           
@@ -734,8 +754,8 @@
               // Pour chaque case de la scène
               for (const panel of scene.panels) {
                 // Sélectionner un style artistique et une ambiance aléatoires
-                const style = artisticStyles[Math.floor(Math.random() * artisticStyles.length)];
-                const mood = moods[Math.floor(Math.random() * moods.length)];
+                const style = artisticStyles[Math.floor(seededRandom() * artisticStyles.length)];
+                const mood = moods[Math.floor(seededRandom() * moods.length)];
                 
                 // Traduire la description en anglais (simulation)
                 // Dans une implémentation réelle, on utiliserait une API de traduction
@@ -828,8 +848,18 @@
 
         // Fonction principale pour générer une histoire améliorée
         function generateEnhancedStory(keywords) {
-          // Générer l'histoire
-          const story = generateCreativeStory(keywords);
+          // Créer un facteur d'aléatoire basé sur l'horodatage actuel et un nombre aléatoire
+          const randomSeed = Date.now() * Math.random();
+          
+          // Générer l'histoire avec le seed aléatoire
+          const story = generateCreativeStory(keywords, randomSeed);
+          
+          // Générer le storyboard avec le même seed pour maintenir la cohérence
+          story.storyboard = generateStoryboard(story, randomSeed);
+          
+          // Générer les prompts avec le même seed
+          story.prompts = generatePrompts(story.storyboard, randomSeed);
+          
           return story;
         }
 
@@ -898,59 +928,53 @@
             
             // Calculer le chapitre et la page dans le chapitre
             const chaptersPerPage = currentStory.chapters.length / totalPages;
-            const chapterIndex = Math.floor((currentScenarioPage - 1) * chaptersPerPage);
+            const chapterIndex = Math.floor((pageNumber - 1) * chaptersPerPage);
             const chapter = currentStory.chapters[Math.min(chapterIndex, currentStory.chapters.length - 1)];
             
             // Créer le contenu de la page
-            if (currentScenarioPage === 1) {
-                // Page de titre et synopsis
+            const pageElement = document.createElement('div');
+            pageElement.className = 'scenario-page';
+            
+            // Afficher le titre de l'histoire sur la première page
+            if (pageNumber === 1) {
                 const titleElement = document.createElement('h2');
                 titleElement.className = 'story-title';
                 titleElement.textContent = currentStory.title;
-                scenarioPages.appendChild(titleElement);
+                pageElement.appendChild(titleElement);
                 
                 const synopsisElement = document.createElement('div');
                 synopsisElement.className = 'story-synopsis';
                 synopsisElement.textContent = currentStory.synopsis;
-                scenarioPages.appendChild(synopsisElement);
-                
-                const genreElement = document.createElement('p');
-                genreElement.innerHTML = `<strong>Genre:</strong> ${currentStory.genre}`;
-                scenarioPages.appendChild(genreElement);
-                
-                const themesElement = document.createElement('p');
-                themesElement.innerHTML = `<strong>Thèmes:</strong> ${currentStory.themes.join(', ')}`;
-                scenarioPages.appendChild(themesElement);
-                
-                const structureElement = document.createElement('p');
-                structureElement.innerHTML = `<strong>Structure narrative:</strong> ${currentStory.structure}`;
-                scenarioPages.appendChild(structureElement);
-            } else {
-                // Pages de chapitres
-                const chapterElement = document.createElement('div');
-                chapterElement.className = 'chapter';
-                
-                const chapterTitle = document.createElement('h3');
-                chapterTitle.className = 'chapter-title';
-                chapterTitle.textContent = chapter.title;
-                chapterElement.appendChild(chapterTitle);
-                
-                const chapterContent = document.createElement('div');
-                chapterContent.className = 'chapter-content';
-                
-                // Diviser le contenu du chapitre en paragraphes
-                const paragraphs = chapter.content.split('\n\n');
-                paragraphs.forEach(paragraph => {
-                    if (paragraph.trim()) {
-                        const p = document.createElement('p');
-                        p.textContent = paragraph.trim();
-                        chapterContent.appendChild(p);
-                    }
-                });
-                
-                chapterElement.appendChild(chapterContent);
-                scenarioPages.appendChild(chapterElement);
+                pageElement.appendChild(synopsisElement);
             }
+            
+            // Afficher le titre du chapitre
+            const chapterTitleElement = document.createElement('h3');
+            chapterTitleElement.className = 'chapter-title';
+            chapterTitleElement.textContent = chapter.title;
+            pageElement.appendChild(chapterTitleElement);
+            
+            // Afficher le contenu du chapitre
+            const contentElement = document.createElement('div');
+            contentElement.className = 'chapter-content';
+            
+            // Diviser le contenu du chapitre en paragraphes
+            const paragraphs = chapter.content.split('\n\n');
+            
+            // Calculer quel paragraphe afficher sur cette page
+            const paragraphsPerPage = paragraphs.length / 4; // 4 pages par chapitre
+            const startParagraph = Math.floor(((pageNumber - 1) % 4) * paragraphsPerPage);
+            const endParagraph = Math.floor(startParagraph + paragraphsPerPage);
+            
+            // Afficher les paragraphes correspondants
+            for (let i = startParagraph; i < Math.min(endParagraph, paragraphs.length); i++) {
+                const p = document.createElement('p');
+                p.textContent = paragraphs[i];
+                contentElement.appendChild(p);
+            }
+            
+            pageElement.appendChild(contentElement);
+            scenarioPages.appendChild(pageElement);
         }
         
         // Fonction pour afficher une page du storyboard
@@ -964,7 +988,7 @@
             const storyboardPages = document.getElementById('storyboardPages');
             storyboardPages.innerHTML = '';
             
-            // Trouver la page du storyboard correspondante
+            // Trouver la page correspondante dans le storyboard
             const page = currentStoryboard.find(p => p.pageNumber === currentStoryboardPage);
             if (!page) return;
             
@@ -977,21 +1001,20 @@
             titleElement.textContent = page.title;
             pageElement.appendChild(titleElement);
             
-            // Ajouter chaque scène
+            // Afficher chaque scène
             page.scenes.forEach(scene => {
                 const sceneElement = document.createElement('div');
                 sceneElement.className = 'storyboard-scene';
                 
-                const sceneTitle = document.createElement('h4');
-                sceneTitle.textContent = scene.title;
-                sceneElement.appendChild(sceneTitle);
+                const sceneTitleElement = document.createElement('h4');
+                sceneTitleElement.textContent = scene.title;
+                sceneElement.appendChild(sceneTitleElement);
                 
-                const sceneDescription = document.createElement('div');
-                sceneDescription.className = 'scene-description';
-                sceneDescription.textContent = scene.description;
-                sceneElement.appendChild(sceneDescription);
+                const sceneDescriptionElement = document.createElement('p');
+                sceneDescriptionElement.textContent = scene.description;
+                sceneElement.appendChild(sceneDescriptionElement);
                 
-                // Ajouter les cases
+                // Afficher les cases de la scène
                 const panelsContainer = document.createElement('div');
                 panelsContainer.className = 'scene-panels';
                 
@@ -1087,8 +1110,8 @@
             
             // Utiliser le générateur d'histoires amélioré
             currentStory = generateEnhancedStory(keywords);
-            currentStoryboard = generateStoryboard(currentStory);
-            currentPrompts = generatePrompts(currentStoryboard);
+            currentStoryboard = currentStory.storyboard;
+            currentPrompts = currentStory.prompts;
             
             // Afficher le contenu généré
             displayScenarioPage(1);
